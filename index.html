@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="color-scheme" content="light only">
+<meta name="theme-color" content="#ffffff">
+<title>moreener — Feedback</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:   #111110;
+  --ink:     #1E1E1C;
+  --ink-dk:  #3A3A36;
+  --ink-mid: #5C5C54;
+  --ink-lt:  #A8A89E;
+  --border:  #E6E5DC;
+  --off:     #F8F7F2;
+  --ivory:   #F2F0E8;
+  /* 분홍 포인트 컬러 */
+  --pink:    #E8C4C4;
+  --pink-lt: #FAEEF0;
+  --pink-bg: #FDF4F5;
+  --pink-dk: #B05070;
+  --pink-bd: #D4A0A8;
+  --rose:    #C86060;
+  --serif:   'Noto Sans KR', sans-serif;
+  --sans:    'Noto Sans KR', sans-serif;
+  --r-sm: 8px; --r-md: 14px; --r-lg: 20px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; color-scheme: light only; }
+
+@media (prefers-color-scheme: dark) {
+  html { filter: none !important; }
+  body { background: #FFFFFF !important; color: #1E1E1C !important; }
+}
+
+body {
+  font-family: var(--sans);
+  background: #FFFFFF;
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* ── PROGRESS ── */
+.progress-wrap {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100; background: #FFFFFF;
+  border-bottom: 1px solid var(--border);
+  padding: 13px 22px 11px;
+}
+.progress-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; }
+.progress-brand { font-family: var(--serif); font-size: 16px; color: var(--black); letter-spacing: 1px; font-weight: 700; }
+.progress-status { font-size: 11.5px; color: var(--ink-mid); font-weight: 400; transition: color 0.4s; }
+.progress-status.done { color: var(--pink-dk); font-weight: 500; }
+.progress-track { height: 2px; background: var(--ivory); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--black); border-radius: 2px; width: 0%; transition: width 0.55s cubic-bezier(0.4,0,0.2,1); }
+
+/* ── LAYOUT ── */
+.form-outer { max-width: 460px; margin: 0 auto; padding-bottom: 80px; }
+
+/* ── COVER ── */
+.cover { padding: 84px 26px 50px; border-bottom: 1px solid var(--border); }
+.cover-eyebrow { font-size: 10px; letter-spacing: 4px; color: var(--pink-dk); text-transform: uppercase; margin-bottom: 22px; font-weight: 400; }
+.cover-title { font-family: var(--serif); font-size: 34px; line-height: 1.22; color: var(--black); margin-bottom: 18px; letter-spacing: -0.5px; font-weight: 300; }
+.cover-sub { font-size: 14px; color: var(--ink-dk); line-height: 1.95; margin-bottom: 28px; font-weight: 300; }
+.cover-sub strong { color: var(--ink); font-weight: 500; }
+.cover-badge { display: inline-flex; align-items: center; gap: 7px; background: var(--pink-lt); color: var(--pink-dk); font-size: 12px; padding: 7px 15px; border-radius: var(--r-lg); font-weight: 500; border: 1px solid var(--pink-bd); }
+.cover-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--pink-dk); opacity: 0.7; }
+
+/* ── REQ NOTE ── */
+.req-note { font-size: 11.5px; color: var(--ink-mid); padding: 14px 26px; border-bottom: 1px solid var(--border); background: var(--off); }
+
+/* ── SECTION ── */
+.section { padding: 38px 26px 0; }
+.section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+.section-num { font-size: 11px; color: var(--pink-dk); font-weight: 500; letter-spacing: 1px; }
+.section-title { font-size: 18px; font-weight: 500; color: var(--black); letter-spacing: -0.1px; }
+.section-opt { font-size: 10px; color: var(--ink-mid); background: var(--ivory); padding: 2px 8px; border-radius: 20px; font-weight: 400; margin-left: 4px; border: 1px solid var(--border); }
+.section-divider { height: 1px; background: var(--border); margin: 14px 0 24px; border: none; }
+
+/* ── CARD ── */
+.card { background: #FFFFFF; border: 1.5px solid var(--border); border-radius: var(--r-md); padding: 20px 20px 18px; margin-bottom: 10px; transition: border-color 0.2s; }
+.card:focus-within { border-color: var(--ink-lt); }
+.label { font-size: 13px; font-weight: 500; color: var(--black); margin-bottom: 6px; display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
+.req { color: var(--rose); font-weight: 400; font-size: 20px; line-height: 1; }
+.hint { font-size: 12.5px; color: var(--ink-mid); margin-bottom: 13px; line-height: 1.75; font-weight: 300; }
+.hint strong { color: var(--ink-dk); font-weight: 500; }
+.hint em { color: var(--ink-mid); font-style: normal; font-weight: 300; font-size: 11px; display: block; margin-top: 4px; }
+
+/* ── INPUTS ── */
+input[type="text"], input[type="tel"], textarea {
+  width: 100%; background: var(--off); border: 1.5px solid var(--border); border-radius: var(--r-sm);
+  padding: 11px 14px; font-size: 14px; font-family: var(--sans); font-weight: 300; color: var(--ink);
+  outline: none; transition: border-color 0.18s, background 0.18s; -webkit-appearance: none; resize: none;
+}
+input:focus, textarea:focus { border-color: var(--ink-lt); background: #FFFFFF; }
+input::placeholder, textarea::placeholder { color: var(--ink-lt); font-weight: 300; }
+
+/* ── CHIPS ── */
+.chip-group { display: flex; flex-wrap: wrap; gap: 7px; }
+.chip { padding: 7px 15px; border: 1.5px solid var(--border); border-radius: 20px; font-size: 12.5px; font-weight: 300; color: var(--ink-dk); background: var(--off); cursor: pointer; transition: all 0.15s; user-select: none; -webkit-tap-highlight-color: transparent; }
+.chip.active { background: var(--black); border-color: var(--black); color: #FFFFFF; font-weight: 400; }
+
+/* ── SCALE ── */
+.scale-wrap { margin-top: 4px; }
+.scale-group { display: flex; gap: 6px; }
+.scale-btn { flex: 1; height: 42px; border: 1.5px solid var(--border); border-radius: var(--r-sm); background: var(--off); font-size: 14px; font-weight: 400; color: var(--ink-mid); cursor: pointer; transition: all 0.15s; font-family: var(--sans); -webkit-tap-highlight-color: transparent; }
+.scale-btn.active { background: var(--black); border-color: var(--black); color: #FFFFFF; font-weight: 500; }
+.scale-labels { display: flex; justify-content: space-between; margin-top: 6px; }
+.scale-label { font-size: 11px; color: var(--ink-lt); }
+
+/* ── YES/NO ── */
+.yn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.yn-btn { height: 46px; border: 1.5px solid var(--border); border-radius: var(--r-md); background: var(--off); font-size: 14px; font-weight: 400; color: var(--ink-mid); cursor: pointer; transition: all 0.15s; font-family: var(--sans); -webkit-tap-highlight-color: transparent; }
+.yn-btn.active { background: var(--black); border-color: var(--black); color: #FFFFFF; font-weight: 500; }
+
+/* ── NOTICE ── */
+.notice { background: var(--pink-bg); border: 1px solid var(--pink-bd); border-radius: var(--r-md); padding: 14px 16px; margin-bottom: 16px; font-size: 12.5px; color: var(--ink-dk); line-height: 1.85; font-weight: 300; }
+.notice strong { color: var(--ink); font-weight: 500; }
+
+/* ── CONSENT ── */
+.consent-card { border: 1.5px solid var(--border); border-radius: var(--r-md); padding: 18px 20px; margin-bottom: 10px; background: var(--off); }
+.consent-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.consent-title { font-size: 13px; font-weight: 500; color: var(--black); margin-bottom: 4px; }
+.consent-sub { font-size: 12px; color: var(--ink-mid); line-height: 1.7; font-weight: 300; }
+.consent-sub em { color: var(--pink-dk); font-style: normal; font-weight: 500; }
+.toggle { position: relative; width: 44px; height: 25px; flex-shrink: 0; margin-top: 2px; }
+.toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+.toggle-track { position: absolute; inset: 0; background: var(--border); border-radius: 13px; cursor: pointer; transition: background 0.22s; }
+.toggle input:checked + .toggle-track { background: var(--black); }
+.toggle-thumb { position: absolute; top: 3px; left: 3px; width: 19px; height: 19px; background: white; border-radius: 50%; transition: transform 0.22s; pointer-events: none; box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+.toggle input:checked ~ .toggle-thumb { transform: translateX(19px); }
+
+/* ── SUBMIT ── */
+.submit-wrap { padding: 0 26px; margin-top: 30px; }
+.submit-section { border: 1.5px solid var(--border); border-radius: var(--r-lg); padding: 30px 26px; text-align: center; background: var(--pink-bg); }
+.submit-title { font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: 9px; }
+.submit-sub { font-size: 13px; color: var(--ink-mid); margin-bottom: 26px; line-height: 1.85; font-weight: 300; }
+.submit-sub strong { color: var(--ink-dk); font-weight: 500; }
+.submit-btn { display: block; width: 100%; background: var(--black); color: #FFFFFF; font-size: 14px; font-weight: 500; font-family: var(--sans); padding: 16px 24px; border-radius: var(--r-sm); border: none; cursor: pointer; letter-spacing: 0.4px; transition: opacity 0.15s; -webkit-tap-highlight-color: transparent; }
+.submit-btn:active { opacity: 0.8; }
+.submit-btn.loading { opacity: 0.45; pointer-events: none; }
+
+/* ── SUCCESS ── */
+.success-screen { display: none; min-height: 100vh; align-items: center; justify-content: center; text-align: center; padding: 40px 28px; flex-direction: column; background: #FFFFFF; }
+.success-screen.show { display: flex; }
+.success-icon { width: 56px; height: 56px; border-radius: 50%; border: 1.5px solid var(--pink-bd); background: var(--pink-lt); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 28px; color: var(--pink-dk); }
+.success-rule { width: 28px; height: 1.5px; background: var(--border); margin: 20px auto; border-radius: 1px; }
+.success-title { font-size: 26px; font-weight: 700; color: var(--black); margin-bottom: 12px; line-height: 1.3; }
+.success-sub { font-size: 14px; color: var(--ink-mid); line-height: 1.95; max-width: 260px; font-weight: 300; }
+.success-badge { margin-top: 26px; background: var(--pink-lt); color: var(--pink-dk); font-size: 11.5px; font-weight: 500; padding: 7px 18px; border-radius: 20px; border: 1px solid var(--pink-bd); letter-spacing: 2px; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-row">
+    <span class="progress-brand">moreener</span>
+    <span class="progress-status" id="prog-status">feedback</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+</div>
+
+<!-- SUCCESS -->
+<div class="success-screen" id="success">
+  <div class="success-icon">✦</div>
+  <div class="success-title">소중한 피드백<br>감사해요 🤍</div>
+  <div class="success-rule"></div>
+  <div class="success-sub">작성해주신 의견이<br>moreener를 만들어가는 데<br>큰 힘이 돼요.</div>
+  <div class="success-badge">moreener</div>
+</div>
+
+<!-- FORM -->
+<div id="main">
+<div class="form-outer">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-eyebrow">moreener · feedback</div>
+    <div class="cover-title" style="font-family:'Plus Jakarta Sans',sans-serif; font-size:18px; font-weight:300; letter-spacing:4px; margin-bottom:10px;">The Days We Create</div>
+    <div class="cover-title" style="font-size:24px; font-weight:300; margin-bottom:18px;">솔직한 피드백을<br>부탁드려요.</div>
+    <div class="cover-sub">
+      커플의 이야기를 일러스트 스토리맵으로 만들어드리는<br>
+      <strong>moreener(모리너)</strong>를 준비하고 있어요.<br><br>
+      방금 작성해보신 <strong>주문 접수 폼</strong>에 대한<br>
+      솔직한 의견을 남겨주시면 정말 큰 도움이 돼요.
+    </div>
+    <div class="cover-badge">약 3–5분 소요</div>
+  </div>
+
+  <div class="req-note">
+    <span style="color:var(--rose); font-size:20px; line-height:1; vertical-align:middle;">*</span> 표시 항목은 필수예요
+  </div>
+
+  <!-- 01 -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <span class="section-title">간단히 소개해주세요</span>
+    </div>
+  </div>
+  <hr class="section-divider" style="margin-left:26px;margin-right:26px;">
+  <div style="padding:0 26px;">
+    <div class="card">
+      <div class="label">연령대 <span class="req">*</span></div>
+      <div class="chip-group" id="age-group">
+        <div class="chip" onclick="togSingle(this,'age')">20대 초반</div>
+        <div class="chip" onclick="togSingle(this,'age')">20대 후반</div>
+        <div class="chip" onclick="togSingle(this,'age')">30대 초반</div>
+        <div class="chip" onclick="togSingle(this,'age')">30대 후반</div>
+        <div class="chip" onclick="togSingle(this,'age')">40대 이상</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="label">결혼하셨나요? <span class="req">*</span></div>
+      <div class="yn-group">
+        <button class="yn-btn" id="rel-yes" onclick="togYN('rel','yes')">💍 네, 기혼이에요</button>
+        <button class="yn-btn" id="rel-no"  onclick="togYN('rel','no')">아니요, 미혼이에요</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <span class="section-title">폼 작성 경험</span>
+    </div>
+  </div>
+  <hr class="section-divider" style="margin-left:26px;margin-right:26px;">
+  <div style="padding:0 26px;">
+    <div class="notice">
+      <strong>주문 접수 폼을 직접 작성해보신 후</strong> 아래 질문에 답해주세요.<br>
+      아직 안 해보셨다면 먼저 작성 후 돌아와주세요 😊
+    </div>
+    <div class="card">
+      <div class="label">폼이 얼마나 사용하기 편했나요? <span class="req">*</span></div>
+      <div class="hint">1 = 너무 불편해요 · 5 = 매우 편했어요</div>
+      <div class="scale-wrap">
+        <div class="scale-group" id="ease-group">
+          <button class="scale-btn" onclick="togScale('ease',1,this)">1</button>
+          <button class="scale-btn" onclick="togScale('ease',2,this)">2</button>
+          <button class="scale-btn" onclick="togScale('ease',3,this)">3</button>
+          <button class="scale-btn" onclick="togScale('ease',4,this)">4</button>
+          <button class="scale-btn" onclick="togScale('ease',5,this)">5</button>
+        </div>
+        <div class="scale-labels">
+          <span class="scale-label">불편해요</span>
+          <span class="scale-label">매우 편했어요</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="label">폼 작성에 얼마나 걸리셨나요? <span class="req">*</span></div>
+      <div class="chip-group" id="time-group">
+        <div class="chip" onclick="togSingle(this,'time')">3분 이내</div>
+        <div class="chip" onclick="togSingle(this,'time')">3–5분</div>
+        <div class="chip" onclick="togSingle(this,'time')">5–10분</div>
+        <div class="chip" onclick="togSingle(this,'time')">10분 이상</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="label">각 질문의 가이드 문구가 도움이 되었나요? <span class="req">*</span></div>
+      <div class="hint">장면 구성, 우리 이야기 등 각 칸 아래 설명 문구들이요</div>
+      <div class="chip-group" id="guide-group">
+        <div class="chip" onclick="togSingle(this,'guide')">매우 도움됐어요</div>
+        <div class="chip" onclick="togSingle(this,'guide')">도움됐어요</div>
+        <div class="chip" onclick="togSingle(this,'guide')">보통이에요</div>
+        <div class="chip" onclick="togSingle(this,'guide')">별로 도움 안 됐어요</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="label">작성하다 막히거나 어려웠던 부분이 있었나요? <span class="section-opt">선택</span></div>
+      <textarea id="hard" rows="3" placeholder="예: 장면 구성 파트에서 뭘 써야 할지 몰랐어요"></textarea>
+    </div>
+    <div class="card">
+      <div class="label">질문 수가 적당했나요? <span class="req">*</span></div>
+      <div class="yn-group">
+        <button class="yn-btn" id="qty-yes" onclick="togYN('qty','yes')">좀 많아요</button>
+        <button class="yn-btn" id="qty-no"  onclick="togYN('qty','no')">적당해요</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <span class="section-title">서비스에 대한 생각</span>
+    </div>
+  </div>
+  <hr class="section-divider" style="margin-left:26px;margin-right:26px;">
+  <div style="padding:0 26px;">
+    <div class="card">
+      <div class="label">이 서비스가 얼마나 매력적으로 느껴지나요? <span class="req">*</span></div>
+      <div class="hint">1 = 전혀 관심 없어요 · 5 = 꼭 받아보고 싶어요</div>
+      <div class="scale-wrap">
+        <div class="scale-group" id="appeal-group">
+          <button class="scale-btn" onclick="togScale('appeal',1,this)">1</button>
+          <button class="scale-btn" onclick="togScale('appeal',2,this)">2</button>
+          <button class="scale-btn" onclick="togScale('appeal',3,this)">3</button>
+          <button class="scale-btn" onclick="togScale('appeal',4,this)">4</button>
+          <button class="scale-btn" onclick="togScale('appeal',5,this)">5</button>
+        </div>
+        <div class="scale-labels">
+          <span class="scale-label">관심 없어요</span>
+          <span class="scale-label">꼭 받고 싶어요</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="label">어떤 상황에서 이용할 것 같나요? <span class="section-opt">복수 선택</span></div>
+      <div class="chip-group" id="when-group">
+        <div class="chip" onclick="tog(this)">기념일 선물</div>
+        <div class="chip" onclick="tog(this)">프로포즈 선물</div>
+        <div class="chip" onclick="tog(this)">결혼기념일</div>
+        <div class="chip" onclick="tog(this)">생일 선물</div>
+        <div class="chip" onclick="tog(this)">집들이 선물</div>
+        <div class="chip" onclick="tog(this)">우리 이야기를 남기고 싶어서</div>
+      </div>
+      <div style="margin-top:8px;">
+        <input type="text" id="when-etc" placeholder="기타 — 직접 입력해주세요">
+      </div>
+    </div>
+    <div class="card">
+      <div class="label">각 상품의 가격이 어떻게 느껴지나요? <span class="req">*</span></div>
+      <div class="hint" style="margin-bottom:16px;">
+        베이직 <strong>A4 · 4–6장면 · 120,000원~</strong><br>
+        시그니처 <strong>A3 · 8–11장면 · 240,000원~</strong><br>
+        프리미엄 <strong>A2 · 12–15장면 · 480,000원~</strong>
+      </div>
+      <div class="label" style="font-size:12px; color:var(--ink-mid); font-weight:400; margin-bottom:6px;">전체적으로 가격이</div>
+      <div class="chip-group" id="price-group">
+        <div class="chip" onclick="togSingle(this,'price')">많이 비싸요</div>
+        <div class="chip" onclick="togSingle(this,'price')">조금 비싼 편이에요</div>
+        <div class="chip" onclick="togSingle(this,'price')">적당해요</div>
+        <div class="chip" onclick="togSingle(this,'price')">오히려 저렴해요</div>
+      </div>
+      <div style="margin-top:12px;">
+        <input type="text" id="price-etc" placeholder="가격에 대해 더 하고 싶은 말이 있으면 적어주세요">
+      </div>
+    </div>
+    <div class="card">
+      <div class="label">주변에 추천할 것 같나요? <span class="req">*</span></div>
+      <div class="hint">1 = 추천 안 해요 · 5 = 꼭 추천할게요</div>
+      <div class="scale-wrap">
+        <div class="scale-group" id="nps-group">
+          <button class="scale-btn" onclick="togScale('nps',1,this)">1</button>
+          <button class="scale-btn" onclick="togScale('nps',2,this)">2</button>
+          <button class="scale-btn" onclick="togScale('nps',3,this)">3</button>
+          <button class="scale-btn" onclick="togScale('nps',4,this)">4</button>
+          <button class="scale-btn" onclick="togScale('nps',5,this)">5</button>
+        </div>
+        <div class="scale-labels">
+          <span class="scale-label">추천 안 해요</span>
+          <span class="scale-label">꼭 추천할게요</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <span class="section-title">마지막으로</span>
+    </div>
+  </div>
+  <hr class="section-divider" style="margin-left:26px;margin-right:26px;">
+  <div style="padding:0 26px;">
+    <div class="card">
+      <div class="label">아쉬웠던 점 또는 개선했으면 하는 점 <span class="section-opt">선택</span></div>
+      <div class="hint">어떤 의견이든 솔직하게 적어주세요. 정말 소중한 피드백이에요 🙏</div>
+      <textarea id="improve" rows="4" placeholder="자유롭게 적어주세요"></textarea>
+    </div>
+    <div class="card">
+      <div class="label">가장 마음에 들었던 부분 <span class="section-opt">선택</span></div>
+      <textarea id="good" rows="3" placeholder="좋았던 점도 알려주시면 힘이 돼요 😊"></textarea>
+    </div>
+    <div class="consent-card">
+      <div class="consent-row">
+        <div>
+          <div class="consent-title">연락처 남기기</div>
+          <div class="consent-sub">출시 소식이나 <em>얼리버드 혜택</em>을 알려드릴게요</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="contact-toggle" onchange="toggleContact()">
+          <div class="toggle-track"></div>
+          <div class="toggle-thumb"></div>
+        </label>
+      </div>
+      <div id="contact-input" style="display:none; margin-top:14px;">
+        <input type="text" id="contact" placeholder="카카오톡 ID 또는 인스타그램 @계정">
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-wrap">
+    <div class="submit-section">
+      <div class="submit-title">다 작성하셨나요?</div>
+      <div class="submit-sub">소중한 시간 내주셔서 <strong>진심으로 감사해요.</strong><br>여러분의 피드백이 moreener를 만들어가요.</div>
+      <button class="submit-btn" id="sub-btn" onclick="doSubmit()">피드백 제출하기 →</button>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+/* ━━━ 상태 ━━━ */
+const scores = { ease: 0, appeal: 0, nps: 0 };
+const yesno  = { rel: '', qty: '' };
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwbT94e5HeTgw2TWxTVc4v_P0mu75u0v4a2VjNffdx4fZMG95UHxprjodmSYwUXzEPCew/exec';
+
+/* ━━━ 진행도 ━━━ */
+function prog() {
+  const hasAge   = !!document.querySelector('#age-group .chip.active');
+  const hasRel   = yesno.rel !== '';
+  const hasEase  = scores.ease > 0;
+  const hasTime  = !!document.querySelector('#time-group .chip.active');
+  const hasGuide = !!document.querySelector('#guide-group .chip.active');
+  const hasQty   = yesno.qty !== '';
+  const hasApp   = scores.appeal > 0;
+  const hasPrice = !!document.querySelector('#price-group .chip.active');
+  const hasNps   = scores.nps > 0;
+  const vals = [hasAge, hasRel, hasEase, hasTime, hasGuide, hasQty, hasApp, hasPrice, hasNps];
+  const pct  = Math.round(vals.filter(Boolean).length / vals.length * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  const st = document.getElementById('prog-status');
+  if      (pct === 0) { st.textContent = 'feedback';         st.className = 'progress-status'; }
+  else if (pct <  30) { st.textContent = '시작했어요';        st.className = 'progress-status'; }
+  else if (pct <  57) { st.textContent = '잘 하고 있어요';   st.className = 'progress-status'; }
+  else if (pct <  86) { st.textContent = '거의 다 됐어요';   st.className = 'progress-status'; }
+  else                { st.textContent = '제출 준비 완료 ✓'; st.className = 'progress-status done'; }
+}
+
+/* ━━━ 칩 토글 ━━━ */
+function tog(el) {
+  el.classList.toggle('active');
+  prog();
+}
+function togSingle(el, group) {
+  el.closest('.chip-group').querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  prog();
+}
+
+/* ━━━ 척도 ━━━ */
+function togScale(type, val, el) {
+  el.closest('.scale-group').querySelectorAll('.scale-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  scores[type] = val;
+  prog();
+}
+
+/* ━━━ Yes/No ━━━ */
+function togYN(type, val) {
+  document.getElementById(type + '-yes').classList.remove('active');
+  document.getElementById(type + '-no').classList.remove('active');
+  document.getElementById(type + '-' + (val === 'yes' ? 'yes' : 'no')).classList.add('active');
+  yesno[type] = val;
+  prog();
+}
+
+/* ━━━ 연락처 토글 ━━━ */
+function toggleContact() {
+  const show = document.getElementById('contact-toggle').checked;
+  document.getElementById('contact-input').style.display = show ? 'block' : 'none';
+}
+
+/* ━━━ 데이터 수집 ━━━ */
+function collect() {
+  const age    = document.querySelector('#age-group .chip.active')?.textContent.trim() || '';
+  const time   = document.querySelector('#time-group .chip.active')?.textContent.trim() || '';
+  const guide  = document.querySelector('#guide-group .chip.active')?.textContent.trim() || '';
+  const price  = document.querySelector('#price-group .chip.active')?.textContent.trim() || '';
+  const when    = [
+    ...Array.from(document.querySelectorAll('#when-group .chip.active')).map(c => c.textContent.trim()),
+    ...(document.getElementById('when-etc').value.trim() ? [document.getElementById('when-etc').value.trim()] : [])
+  ].join(', ');
+  return {
+    제출시간:            new Date().toLocaleString('ko-KR'),
+    연령대:              age,
+    결혼여부:            yesno.rel === 'yes' ? '기혼' : yesno.rel === 'no' ? '미혼' : '',
+    '폼편의성(1-5)':     scores.ease,
+    작성소요시간:        time,
+    가이드도움여부:      guide,
+    어려웠던부분:        document.getElementById('hard').value.trim(),
+    질문수적절성:        yesno.qty === 'yes' ? '많아요' : yesno.qty === 'no' ? '적당해요' : '',
+    '서비스매력도(1-5)': scores.appeal,
+    이용상황:            when,
+    가격반응:            price,
+    가격의견:            document.getElementById('price-etc').value.trim(),
+    '추천의향(1-5)':     scores.nps,
+    개선점:              document.getElementById('improve').value.trim(),
+    좋았던점:            document.getElementById('good').value.trim(),
+    연락처:              document.getElementById('contact-toggle').checked ? document.getElementById('contact').value.trim() : '',
+  };
+}
+
+/* ━━━ 유효성 검사 ━━━ */
+function validate(d) {
+  if (!d['연령대'])            { alert('연령대를 선택해주세요'); return false; }
+  if (!d['결혼여부'])          { alert('결혼 여부를 선택해주세요'); return false; }
+  if (!d['폼편의성(1-5)'])    { alert('폼 편의성 점수를 선택해주세요'); return false; }
+  if (!d['작성소요시간'])      { alert('작성 소요 시간을 선택해주세요'); return false; }
+  if (!d['가이드도움여부'])    { alert('가이드 도움 여부를 선택해주세요'); return false; }
+  if (!d['질문수적절성'])      { alert('질문 수에 대한 의견을 선택해주세요'); return false; }
+  if (!d['서비스매력도(1-5)']) { alert('서비스 매력도 점수를 선택해주세요'); return false; }
+  if (!d['가격반응'])          { alert('가격에 대한 의견을 선택해주세요'); return false; }
+  if (!d['추천의향(1-5)'])     { alert('추천 의향 점수를 선택해주세요'); return false; }
+  return true;
+}
+
+/* ━━━ 제출 ━━━ */
+async function doSubmit() {
+  const d = collect();
+  if (!validate(d)) return;
+  const btn = document.getElementById('sub-btn');
+  btn.classList.add('loading');
+  btn.textContent = '제출 중...';
+  try {
+    if (SHEET_URL !== '여기에_피드백용_Apps_Script_URL') {
+      await fetch(SHEET_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(d),
+      });
+    } else {
+      await new Promise(r => setTimeout(r, 800));
+    }
+    document.getElementById('main').style.display = 'none';
+    document.getElementById('success').classList.add('show');
+    window.scrollTo(0, 0);
+  } catch(err) {
+    btn.classList.remove('loading');
+    btn.textContent = '피드백 제출하기 →';
+    alert('오류가 발생했어요. 잠시 후 다시 시도해주세요.');
+  }
+}
+</script>
+</body>
+</html>
